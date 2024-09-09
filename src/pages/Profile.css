@@ -1,0 +1,75 @@
+/* src/pages/Profile.css */
+
+.profile-container {
+    padding: 2rem;
+  }
+  
+  .profile-info,
+  .transaction-history,
+  .address-management {
+    margin-bottom: 2rem;
+  }
+  
+  .profile-info form div {
+    margin-bottom: 1rem;
+  }
+  
+  .profile-info label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .profile-info input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .profile-info button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .transaction-history table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transaction-history th,
+  .transaction-history td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .transaction-history th {
+    background-color: #f4f4f4;
+  }
+  
+  .address-management .address-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .address-management input {
+    margin-right: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .address-management button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
