@@ -1,6 +1,11 @@
 /* src/components/Header.css */
 
 .header {
+    position: fixed; /* Rend le header fixe */
+    top: 0; /* Le positionne en haut de la page */
+    left: 0; /* L'aligne à gauche */
+    right: 0; /* L'étend sur toute la largeur */
+    z-index: 1000; /* Assure que le header reste au-dessus des autres éléments */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,6 +13,13 @@
     background-color: #333;
     color: white;
 }
+
+/* Ajoutez un élément pour compenser la hauteur du header fixe */
+body {
+    padding-top: 60px; /* Ajustez cette valeur en fonction de la hauteur de votre header */
+}
+
+/* Le reste du CSS reste inchangé */
 
 .logo a {
     color: white;

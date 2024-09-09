@@ -1,6 +1,6 @@
 // src/pages/Register.js
 import React, { useState } from 'react';
-import './Register.css'; // Assurez-vous que ce fichier existe et est bien stylisé
+import './Register.css';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,22 +14,77 @@ const Register = () => {
     city: '',
     userType: 'particulier', // Définit le type d'utilisateur par défaut
     siret: '',
-    description: ''
+    confirmSiret: '',
+    description: '',
+    acceptedTerms: false, // Indique si les CGU ont été acceptées
   });
 
   const [showAddressFields, setShowAddressFields] = useState(false); // État pour afficher ou cacher les champs d'adresse supplémentaires
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
   };
 
   const toggleAddressFields = () => {
     setShowAddressFields(!showAddressFields); // Inverser l'état d'affichage des champs d'adresse supplémentaires
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Vérifications des champs requis
+    if (!formData.name) newErrors.name = 'Nom requis';
+    if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email valide requis';
+    if (!formData.password) newErrors.password = 'Mot de passe requis';
+    if (formData.userType === 'particulier' && !formData.address) newErrors.address = 'Adresse requise';
+
+    // Vérification spécifique pour les agriculteurs
+    if (formData.userType === 'agriculteur') {
+      if (!formData.siret) newErrors.siret = 'Numéro de SIRET requis';
+      if (formData.siret !== formData.confirmSiret) newErrors.confirmSiret = 'Le numéro de SIRET ne correspond pas';
+    }
+
+    if (!formData.acceptedTerms) newErrors.acceptedTerms = 'Vous devez accepter les CGU';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); // Remplacez ceci par l'appel à l'API d'inscription
+
+    if (validateForm()) {
+      setIsSubmitting(true);
+      // Appeler l'API d'inscription ici pour envoyer les données à votre backend
+      console.log(formData);
+
+      // Simuler l'envoi d'un email de confirmation
+      alert('Un email de validation a été envoyé à ' + formData.email);
+
+      // Réinitialiser le formulaire après l'envoi
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        address: '',
+        street: '',
+        address2: '',
+        zip: '',
+        city: '',
+        userType: 'particulier',
+        siret: '',
+        confirmSiret: '',
+        description: '',
+        acceptedTerms: false,
+      });
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -45,6 +100,7 @@ const Register = () => {
             onChange={handleChange}
             required
           />
+          {errors.name && <span className="error">{errors.name}</span>}
         </div>
         <div>
           <label>Email :</label>
@@ -55,6 +111,7 @@ const Register = () => {
             onChange={handleChange}
             required
           />
+          {errors.email && <span className="error">{errors.email}</span>}
         </div>
         <div>
           <label>Mot de passe :</label>
@@ -65,6 +122,7 @@ const Register = () => {
             onChange={handleChange}
             required
           />
+          {errors.password && <span className="error">{errors.password}</span>}
         </div>
         <div>
           <label>Adresse :</label>
@@ -73,13 +131,13 @@ const Register = () => {
             name="address"
             value={formData.address}
             onChange={handleChange}
-            onClick={toggleAddressFields} // Basculer l'affichage des champs d'adresse supplémentaires
-            required
+            onClick={toggleAddressFields}
+            required={formData.userType === 'particulier'}
           />
+          {errors.address && <span className="error">{errors.address}</span>}
         </div>
 
-        {/* Afficher ou masquer les champs supplémentaires d'adresse en fonction de l'état */}
-        {showAddressFields && (
+        {showAddressFields && formData.userType === 'particulier' && (
           <>
             <div>
               <label>Numéro et voie :</label>
@@ -131,7 +189,6 @@ const Register = () => {
           </select>
         </div>
 
-        {/* Afficher les champs supplémentaires si l'utilisateur est un agriculteur */}
         {formData.userType === 'agriculteur' && (
           <>
             <div>
@@ -143,6 +200,18 @@ const Register = () => {
                 onChange={handleChange}
                 required
               />
+              {errors.siret && <span className="error">{errors.siret}</span>}
+            </div>
+            <div>
+              <label>Confirmer le numéro de SIRET :</label>
+              <input
+                type="text"
+                name="confirmSiret"
+                value={formData.confirmSiret}
+                onChange={handleChange}
+                required
+              />
+              {errors.confirmSiret && <span className="error">{errors.confirmSiret}</span>}
             </div>
             <div>
               <label>Description de l'exploitation :</label>
@@ -154,7 +223,24 @@ const Register = () => {
             </div>
           </>
         )}
-        <button type="submit">S'inscrire</button>
+
+        <div>
+          <input
+            type="checkbox"
+            name="acceptedTerms"
+            checked={formData.acceptedTerms}
+            onChange={handleChange}
+            required
+          />
+          <label>
+            J'accepte les conditions générales d'utilisation
+          </label>
+          {errors.acceptedTerms && <span className="error">{errors.acceptedTerms}</span>}
+        </div>
+
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Inscription en cours...' : "S'inscrire"}
+        </button>
       </form>
     </div>
   );
