@@ -5,8 +5,8 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Profile from './pages/Profile'; // Importer la page de profil
-import './App.css'; // Importer le fichier CSS global
+import Profile from './pages/Profile'; 
+import './App.css'; 
 
 const App = () => {
   return (
