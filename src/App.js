@@ -5,9 +5,11 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Profile from './pages/Profile'; 
-
-import './App.css'; 
+import Profile from './pages/Profile';
+import PaymentPage from './pages/PaymentPage'; 
+import Success from './components/Success';
+import Cancel from './components/Cancel';
+import './App.css';
 
 const App = () => {
   return (
@@ -17,8 +19,10 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} /> {/* Ajouter la route pour le profil */}
-        {/* Ajouter d'autres routes ici */}
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/success" element={<Success />} /> {/* Route pour la réussite du paiement */}
+        <Route path="/cancel" element={<Cancel />} /> {/* Route pour l'annulation du paiement */}
+        <Route path="/payment" element={<PaymentPage />} /> {/* Route de paiement */}
       </Routes>
     </Router>
   );

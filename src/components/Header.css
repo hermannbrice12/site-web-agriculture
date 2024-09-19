@@ -1,8 +1,12 @@
 /* src/components/Header.css */
+body {
+    width: 100%;
+    margin-top: 6rem;
+}
 
 .header {
     position: fixed; /* Rend le header fixe */
-    top: 0; /* Le positionne en haut de la page */
+    top: 0rem; /* Le positionne en haut de la page */
     left: 0; /* L'aligne à gauche */
     right: 0; /* L'étend sur toute la largeur */
     z-index: 1000; /* Assure que le header reste au-dessus des autres éléments */
@@ -15,9 +19,7 @@
 }
 
 /* Ajoutez un élément pour compenser la hauteur du header fixe */
-body {
-    padding-top: 60px; /* Ajustez cette valeur en fonction de la hauteur de votre header */
-}
+
 
 /* Le reste du CSS reste inchangé */
 

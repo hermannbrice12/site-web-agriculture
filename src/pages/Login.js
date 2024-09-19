@@ -38,7 +38,7 @@ const Login = () => {
         </div>
         <button type="submit">Se connecter</button>
       </form>
-      <Link to="/reset-password">Réinitialiser le mot de passe</Link>
+      <Link to="/reset-password">Mot de passe oublié</Link>
     </div>
   );
 };
