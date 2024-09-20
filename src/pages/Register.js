@@ -1,4 +1,3 @@
-// src/pages/Register.js
 import React, { useState } from 'react';
 import './Register.css';
 
@@ -12,16 +11,24 @@ const Register = () => {
     address2: '',
     zip: '',
     city: '',
-    userType: 'particulier', // Définit le type d'utilisateur par défaut
+    userType: 'particulier',
     siret: '',
-    confirmSiret: '',
     description: '',
-    acceptedTerms: false, // Indique si les CGU ont été acceptées
+    acceptedTerms: false,
+    companyName: '',
+    companyAddress: '',
+    companyStreet: '',
+    companyAddress2: '',
+    companyZip: '',
+    companyCity: '',
   });
 
-  const [showAddressFields, setShowAddressFields] = useState(false); // État pour afficher ou cacher les champs d'adresse supplémentaires
+  const [showAddressFields, setShowAddressFields] = useState(false);
+  const [showCompanyInfo, setShowCompanyInfo] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [siretConfirmed, setSiretConfirmed] = useState(false);
+  const [companyInfo, setCompanyInfo] = useState(null);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,59 +39,113 @@ const Register = () => {
   };
 
   const toggleAddressFields = () => {
-    setShowAddressFields(!showAddressFields); // Inverser l'état d'affichage des champs d'adresse supplémentaires
+    setShowAddressFields(!showAddressFields);
+  };
+
+  const toggleCompanyInfo = () => {
+    setShowCompanyInfo(!showCompanyInfo);
   };
 
   const validateForm = () => {
     const newErrors = {};
-
-    // Vérifications des champs requis
     if (!formData.name) newErrors.name = 'Nom requis';
     if (!formData.email || !/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email valide requis';
     if (!formData.password) newErrors.password = 'Mot de passe requis';
     if (formData.userType === 'particulier' && !formData.address) newErrors.address = 'Adresse requise';
-
-    // Vérification spécifique pour les agriculteurs
     if (formData.userType === 'agriculteur') {
       if (!formData.siret) newErrors.siret = 'Numéro de SIRET requis';
-      if (formData.siret !== formData.confirmSiret) newErrors.confirmSiret = 'Le numéro de SIRET ne correspond pas';
+      if (!siretConfirmed) newErrors.siret = 'Veuillez confirmer le SIRET';
+      if (!formData.companyName) newErrors.companyName = 'Nom de l\'entreprise requis';
+      if (!formData.companyAddress) newErrors.companyAddress = 'Adresse de l\'entreprise requise';
     }
-
     if (!formData.acceptedTerms) newErrors.acceptedTerms = 'Vous devez accepter les CGU';
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       setIsSubmitting(true);
-      // Appeler l'API d'inscription ici pour envoyer les données à votre backend
-      console.log(formData);
-
-      // Simuler l'envoi d'un email de confirmation
-      alert('Un email de validation a été envoyé à ' + formData.email);
-
-      // Réinitialiser le formulaire après l'envoi
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        address: '',
-        street: '',
-        address2: '',
-        zip: '',
-        city: '',
-        userType: 'particulier',
-        siret: '',
-        confirmSiret: '',
-        description: '',
-        acceptedTerms: false,
-      });
-      setIsSubmitting(false);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const paymentConfirmed = await simulatePaymentConfirmation();
+        if (paymentConfirmed) {
+          console.log(formData);
+          alert('Inscription réussie ! Un email de validation a été envoyé à ' + formData.email);
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            address: '',
+            street: '',
+            address2: '',
+            zip: '',
+            city: '',
+            userType: 'particulier',
+            siret: '',
+            description: '',
+            acceptedTerms: false,
+            companyName: '',
+            companyAddress: '',
+            companyStreet: '',
+            companyAddress2: '',
+            companyZip: '',
+            companyCity: '',
+          });
+          setSiretConfirmed(false);
+          setCompanyInfo(null);
+        } else {
+          alert('Le paiement n\'a pas pu être confirmé. Veuillez réessayer.');
+        }
+      } catch (error) {
+        console.error('Erreur lors de l\'inscription:', error);
+        alert('Une erreur est survenue lors de l\'inscription. Veuillez réessayer.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
+  };
+
+  const handleConfirmSiret = async () => {
+    if (formData.siret) {
+      try {
+        const response = await simulateSiretVerification(formData.siret);
+        setCompanyInfo(response);
+        setSiretConfirmed(true);
+        toggleCompanyInfo();
+      } catch (error) {
+        console.error('Erreur lors de la vérification du SIRET:', error);
+        setErrors({ ...errors, siret: 'SIRET invalide ou non trouvé' });
+      }
+    }
+  };
+
+  const handleClearSiret = () => {
+    setFormData({ ...formData, siret: '' });
+    setSiretConfirmed(false);
+    setCompanyInfo(null);
+    toggleCompanyInfo();
+  };
+
+  const simulateSiretVerification = async (siret) => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (siret === '92041432300013') {
+      return {
+        name: 'TRIBUCLOUD',
+        streetNumber: '8',
+        street: 'RUE HUSSENET',
+        complement: 'N/A',
+        zipCode: '93110',
+        city: 'ROSNY-SOUS-BOIS'
+      };
+    }
+    throw new Error('SIRET invalide');
+  };
+
+  const simulatePaymentConfirmation = async () => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return Math.random() > 0.2;
   };
 
   return (
@@ -137,7 +198,7 @@ const Register = () => {
           {errors.address && <span className="error">{errors.address}</span>}
         </div>
 
-        {showAddressFields && formData.userType === 'particulier' && (
+        {showAddressFields && (
           <>
             <div>
               <label>Numéro et voie :</label>
@@ -146,7 +207,6 @@ const Register = () => {
                 name="street"
                 value={formData.street}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -165,7 +225,6 @@ const Register = () => {
                 name="zip"
                 value={formData.zip}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -175,7 +234,6 @@ const Register = () => {
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
-                required
               />
             </div>
           </>
@@ -198,21 +256,30 @@ const Register = () => {
                 name="siret"
                 value={formData.siret}
                 onChange={handleChange}
+                disabled={siretConfirmed}
                 required
               />
+              <button type="button" onClick={handleConfirmSiret} disabled={siretConfirmed}>
+                Confirmer le SIRET
+              </button>
+              {siretConfirmed && (
+                <button type="button" onClick={handleClearSiret}>
+                  Supprimer
+                </button>
+              )}
               {errors.siret && <span className="error">{errors.siret}</span>}
             </div>
-            <div>
-              <label>Confirmer le numéro de SIRET :</label>
-              <input
-                type="text"
-                name="confirmSiret"
-                value={formData.confirmSiret}
-                onChange={handleChange}
-                required
-              />
-              {errors.confirmSiret && <span className="error">{errors.confirmSiret}</span>}
-            </div>
+            {showCompanyInfo && companyInfo && (
+              <div>
+                <h3>Informations de l'entreprise :</h3>
+                <p>Nom de la société ou de l'entreprise : {companyInfo.name}</p>
+                <p>Numéro de rue : {companyInfo.streetNumber}</p>
+                <p>Rue : {companyInfo.street}</p>
+                <p>Complément d'adresse : {companyInfo.complement}</p>
+                <p>Code postal : {companyInfo.zipCode}</p>
+                <p>Ville : {companyInfo.city}</p>
+              </div>
+            )}
             <div>
               <label>Description de l'exploitation :</label>
               <textarea
