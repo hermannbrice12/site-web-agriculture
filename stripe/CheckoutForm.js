@@ -49,6 +49,8 @@ const CheckoutForm = () => {
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" />
       </div>
 
+      <p className="or-text">Ou payer par carte</p>
+
       {/* Champ du nom du titulaire de la carte */}
       <input
         type="text"

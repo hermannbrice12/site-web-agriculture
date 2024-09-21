@@ -3,15 +3,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 2rem;
+    margin: 2rem auto;
     padding: 2rem;
     border: 1px solid #ddd;
-    max-width: 400px;
+    max-width: 400px; /* Largeur fixe pour le formulaire entier */
     background-color: white;
-  }
-  
-  .payment-section {
-    width: 100%;
   }
   
   h2 {
@@ -24,19 +20,60 @@
     margin-bottom: 1rem;
   }
   
-  input {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    font-size: 1rem;
+  .apple-pay-button {
+    display: flex;
+    justify-content: center;
     width: 100%;
+    padding: 1rem;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .apple-pay-button img {
+    width: 100px;
+  }
+  
+  .or-text {
+    text-align: center;
+    width: 100%;
+    margin: 1rem 0;
+    color: #666;
+  }
+  
+  input, .card-element, .country-select select, button {
+    width: 100%; /* Assure une largeur constante pour tous les champs */
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    font-size: 1rem;
     border: 1px solid #ddd;
+    border-radius: 5px;
   }
   
   .card-element {
-    margin-bottom: 1rem;
     padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  }
+  
+  .card-input-container {
+    position: relative;
+    width: 100%; /* Largeur cohérente */
+  }
+  
+  /* Position des logos des cartes */
+  .card-logos {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 10px;
+  }
+  
+  .card-logos img {
+    width: 40px;
+    height: auto;
   }
   
   button {
@@ -45,7 +82,7 @@
     color: white;
     border: none;
     cursor: pointer;
-    width: 100%;
+    border-radius: 5px;
   }
   
   button:disabled {

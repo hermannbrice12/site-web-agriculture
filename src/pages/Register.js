@@ -280,14 +280,7 @@ const Register = () => {
                 <p>Ville : {companyInfo.city}</p>
               </div>
             )}
-            <div>
-              <label>Description de l'exploitation :</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </div>
+            
           </>
         )}
 
