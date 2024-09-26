@@ -50,7 +50,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">Agriculteur</Link>
+        <Link to="/">AgriRescue</Link>
       </div>
       <nav className="nav-bar">
         <ul>

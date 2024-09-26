@@ -1,0 +1,62 @@
+/* src/components/ProductCategories.css */
+
+.categories-section {
+    padding: 2rem;
+    background-color: #f9f9f9;
+  }
+  
+  .categories-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid layout */
+    gap: 1.5rem;
+  }
+  
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+  }
+  
+  .category-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .category-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .category-card h3 {
+    font-size: 1.25rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    .categories {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+  
+    .category-card h3 {
+      font-size: 1rem;
+    }
+  
+    .category-icon {
+      font-size: 2.5rem;
+    }
+  }
+  
