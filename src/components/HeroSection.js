@@ -1,5 +1,5 @@
-// src/components/HeroSection.js
 import React from 'react';
+import { Link } from 'react-router-dom'; // Importation de Link
 
 const HeroSection = () => {
   return (
@@ -7,8 +7,11 @@ const HeroSection = () => {
       <div className="hero-content">
         <h1>Achetez des produits agricoles invendus à bas prix</h1>
         <p>Réduisez le gaspillage alimentaire et soutenez les agriculteurs locaux !</p>
-        
-        <button className="cta-button">Découvrez nos produits</button>
+
+        {/* Utilisation de Link pour rediriger vers la page des catégories */}
+        <Link to="/categories">
+          <button className="cta-button">Découvrez nos produits</button>
+        </Link>
       </div>
     </section>
   );
