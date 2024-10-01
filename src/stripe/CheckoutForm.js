@@ -25,7 +25,7 @@ const CheckoutForm = () => {
         email,
         name,
         address: {
-          country: country, // Suppression de postal_code ici
+          country: country, 
         },
       },
     });

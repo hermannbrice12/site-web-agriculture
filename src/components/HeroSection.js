@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import { Link } from 'react-router-dom'; // Importation de Link
 
 const HeroSection = () => {
@@ -12,6 +12,11 @@ const HeroSection = () => {
         <Link to="/categories">
           <button className="cta-button">Découvrez nos produits</button>
         </Link>
+
+        {/* Bande rouge avec le texte STOP AU GASPILLAGE */}
+        <div className="red-banner">
+          <p className="stop-gaspillage-text">STOP AU GASPILLAGE</p>
+        </div>
       </div>
     </section>
   );
