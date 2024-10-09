@@ -1,109 +1,120 @@
 import React, { useState } from 'react';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import './CheckoutForm.css'; // Pour le style
+import './CheckoutForm.css'; 
 
 const CheckoutForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [country, setCountry] = useState('États-Unis');
-  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardName, setCardName] = useState('');
+  const [expiryMonth, setExpiryMonth] = useState('01');
+  const [expiryYear, setExpiryYear] = useState('2024');
+  const [cvv, setCvv] = useState('');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!stripe || !elements) {
-      return;
+  // Fonction pour formater le numéro de carte
+  const handleCardNumberChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Supprimer tout caractère non numérique
+    if (value.length > 16) {
+      value = value.slice(0, 16); // Limite à 16 chiffres
     }
-
-    setPaymentProcessing(true);
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-      billing_details: {
-        email,
-        name,
-        address: {
-          country: country, 
-        },
-      },
-    });
-
-    if (error) {
-      console.log('[error]', error);
-      setPaymentProcessing(false);
-      return;
-    }
-
-    // Poursuivre le paiement avec la méthode de paiement créée
-    processPayment(paymentMethod);
+    const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 '); // Ajouter des espaces tous les 4 chiffres
+    setCardNumber(formattedValue);
   };
 
-  const processPayment = async (paymentMethod) => {
-    console.log('[PaymentMethod]', paymentMethod);
-    setPaymentProcessing(false);
+  const handleCvvChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Supprime tous les caractères non numériques
+    if (value.length <= 3) { // Limite à 3 chiffres
+      setCvv(value);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    console.log({
+      cardNumber,
+      cardName,
+      expiryMonth,
+      expiryYear,
+      cvv,
+    });
   };
 
   return (
     <form onSubmit={handleSubmit} className="checkout-form">
-      {/* Bouton Apple Pay */}
-      <div className="apple-pay-button">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_Pay_logo.svg" alt="Apple Pay" />
+      <h2>Ajouter une carte </h2>
+
+      <div className="form-group">
+        <label htmlFor="cardNumber">Numéro de carte</label>
+        <input
+          type="text"
+          id="cardNumber"
+          value={cardNumber}
+          onChange={handleCardNumberChange}
+          placeholder="1234 1234 1234 1234"
+          maxLength="19" 
+          required
+        />
       </div>
 
-      {/* Bouton PayPal */}
-      <div className="paypal-button">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" />
+      <div className="form-group">
+        <label htmlFor="cardName">Nom sur la carte</label>
+        <input
+          type="text"
+          id="cardName"
+          value={cardName}
+          onChange={(e) => setCardName(e.target.value)}
+          placeholder="Nom complet"
+          required
+        />
       </div>
 
-      <p className="or-text">Ou payer par carte</p>
-
-      {/* Champ E-mail */}
-      <input
-        type="email"
-        placeholder="E-mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-
-      {/* Champ de la carte et les logos */}
-      <div className="card-input-container">
-        <CardElement className="card-element" />
-        <div className="card-logos">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" />
-          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard" />
+      <div className="form-group-expiration">
+        <label>Date d'expiration</label>
+        <div className="expiration-inputs">
+          <select
+            value={expiryMonth}
+            onChange={(e) => setExpiryMonth(e.target.value)}
+          >
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+          </select>
+          <select
+            value={expiryYear}
+            onChange={(e) => setExpiryYear(e.target.value)}
+          >
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+          </select>
         </div>
       </div>
 
-      {/* Champ pour le nom du titulaire de la carte */}
-      <input
-        type="text"
-        placeholder="Nom du titulaire de la carte"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-
-      {/* Sélecteur de pays */}
-      <div className="country-select">
-        <label htmlFor="country">Pays ou région</label>
-        <select
-          id="country"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        >
-          <option value="États-Unis">États-Unis</option>
-          <option value="France">France</option>
-          <option value="Canada">Canada</option>
-          <option value="Royaume-Uni">Royaume-Uni</option>
-        </select>
+      <div className="form-group">
+        <label htmlFor="cvv">Code de sécurité (CVV)</label>
+        <input
+          type="text"
+          id="cvv"
+          value={cvv}
+          onChange={handleCvvChange}
+          placeholder="CVV"
+          maxLength="3"
+          required
+        />
       </div>
 
-      <button type="submit" disabled={!stripe || paymentProcessing}>
-        {paymentProcessing ? 'Processing...' : 'Payer'}
-      </button>
+      <div className="form-actions">
+        <button type="submit">Ajouter votre carte</button>
+        <button type="button">Annuler</button>
+      </div>
     </form>
   );
 };

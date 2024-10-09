@@ -1,134 +1,73 @@
 .checkout-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centre horizontalement les éléments */
+    max-width: 600px;
     margin: 2rem auto;
     padding: 2rem;
     border: 1px solid #ddd;
-    max-width: 400px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    text-align: center; /* Centrer le texte */
-}
-
-p {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    text-align: center; /* Centrer le texte */
-}
-
-/* Bouton Apple Pay */
-.apple-pay-button, .paypal-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    
+  }
+  
+  h2 {
+    font-size: 2rem; 
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group, .form-group-expiration {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    font-size: 1.2rem; 
+    margin-bottom: 0.5rem;
+  }
+  
+  input, select {
     width: 100%;
-    padding: 1rem;
-    background-color: rgba(255, 0, 106, 0.397);
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-.apple-pay-button img, .paypal-button img {
-    width: 100px;
-}
-
-/* Champs de formulaire (input et select) avec dimensions uniformes */
-input, select {
-    margin-bottom: 1rem;
     padding: 0.75rem;
-    font-size: 1rem;
-    width: 100%; /* S'assurer que les champs remplissent 100% de la largeur disponible */
-    height: 45px; /* Hauteur fixe pour uniformiser tous les champs */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-.card-element {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.1rem; 
     margin-bottom: 1rem;
-    padding: 10px;
-    width: 100%; /* Assure que le champ carte est aligné avec les autres */
-    height: 45px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Conteneur pour le champ de carte et les logos */
-.card-input-container {
-    position: relative;
-    width: 100%; /* Assurez que le conteneur du champ prend toute la largeur */
-    padding: 0.75rem; /* Ajoutez le padding pour correspondre aux autres champs */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box; /* Assurez que le padding n'affecte pas la largeur */
-    margin-bottom: 1rem; /* Marge inférieure pour l'espacement */
+  }
+  
+  .expiration-inputs {
     display: flex;
-    align-items: center; /* Alignez les logos verticalement */
-}
-.card-logos {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-20%);
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .form-group-radio {
+    margin-bottom: 1.5rem;
+  }
+  
+  .radio-options {
     display: flex;
-    gap: 10px;
-}
-
-.card-logos img {
-    width: 40px;
-    height: auto;
-}
-
-/* Conteneur pour les pays et le code postal */
-.country-postal-container {
+    justify-content: center; 
+    gap: 2rem;
+  }
+  
+  .form-actions {
     display: flex;
-    flex-direction: column;
-    width: 100%; /* S'assurer que le conteneur prend toute la largeur */
-}
-
-.country-select {
-    margin-bottom: 1rem;
-    width: 100%;
-}
-
-.postal-input {
-    margin-bottom: 1rem;
-}
-
-/* Bouton de soumission */
-button {
-    padding: 1rem;
+    justify-content: space-between; 
+  }
+  
+  button {
+    padding: 0.75rem 1.5rem;
+    border: none;
     background-color: green;
     color: white;
-    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    width: 100%;
-    height: 45px; /* Uniformiser la hauteur du bouton avec les autres champs */
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-button:not(:disabled):hover {
-    background-color: #0056b3;
-}
-
-
-
+    font-size: 1.1rem; 
+  }
+  
+  button[type="button"] {
+    background-color: red;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  

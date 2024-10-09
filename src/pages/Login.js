@@ -1,28 +1,65 @@
-// src/pages/Login.js
 import React, { useState } from 'react';
-import './Login.css'; // Assurez-vous que ce fichier existe et est bien stylisé
-import { Link } from 'react-router-dom';
+import './Login.css'; // Assurez-vous que ce fichier existe pour styliser la page
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [loginData, setLoginData] = useState({
+    username: '',
+    password: '',
+  });
+  const [message, setMessage] = useState(''); // État pour gérer le message de retour
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password }); // Remplacez ceci par l'appel à l'API de connexion
+    setLoading(true);
+    setMessage(''); 
+
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: loginData.username,
+          password: loginData.password,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Échec de la connexion. Veuillez vérifier vos informations.');
+      }
+
+      const data = await response.json();
+
+      if (data.token) {
+        localStorage.setItem('authToken', data.token); // Stocker le jeton dans le localStorage
+        setMessage('Connexion réussie !');
+        // Redirection vers une autre page si nécessaire, par exemple :
+        // window.location.href = "/profile";
+      }
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="login-container">
-      <h2>Connexion</h2>
+      <h2>Se connecter</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email :</label>
+          <label>Nom d'utilisateur :</label>
           <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            name="username"
+            value={loginData.username}
+            onChange={handleChange}
             required
           />
         </div>
@@ -31,14 +68,17 @@ const Login = () => {
           <input
             type="password"
             name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={loginData.password}
+            onChange={handleChange}
             required
           />
         </div>
-        <button type="submit">Se connecter</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Connexion...' : 'Se connecter'}
+        </button>
       </form>
-      <Link to="/reset-password">Mot de passe oublié</Link>
+
+      {message && <p className="message">{message}</p>} {/* Affiche un message de retour */}
     </div>
   );
 };

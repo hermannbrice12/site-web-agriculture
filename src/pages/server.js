@@ -1,23 +1,29 @@
-// server.js
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-
 const app = express();
-const PORT = 5000;
 
-app.use(cors()); // Autoriser les requêtes cross-origin
-app.use(bodyParser.json()); // Parser le JSON des requêtes
+app.use(cors());
+app.use(express.json());
 
-// Route pour recevoir les données du formulaire de contact
-app.post('/api/contact', (req, res) => {
-  const { name, email, message } = req.body;
+const mockUsers = [
+  { id: 1, username: 'agriculteur1', password: 'password123' },
+  { id: 2, username: 'particulier1', password: 'mypassword' },
+];
 
-  // Simuler le traitement et renvoyer une réponse
-  console.log(`Nom: ${name}, Email: ${email}, Message: ${message}`);
-  return res.status(200).json({ message: 'Votre message a été reçu avec succès !' });
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+
+  const user = mockUsers.find(
+    (u) => u.username === username && u.password === password
+  );
+
+  if (user) {
+    res.json({ token: 'fake-jwt-token', userId: user.id });
+  } else {
+    res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect.' });
+  }
 });
 
-app.listen(PORT, () => {
-  console.log(`Le serveur écoute sur le port ${PORT}`);
+app.listen(5000, () => {
+  console.log('Backend running on http://localhost:5000');
 });
