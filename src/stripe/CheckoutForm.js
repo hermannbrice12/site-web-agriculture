@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CheckoutForm.css'; 
+import './CheckoutForm.css'; // Assurez-vous d'avoir le style associé
 
 const CheckoutForm = () => {
   const [cardNumber, setCardNumber] = useState('');
@@ -7,6 +7,7 @@ const CheckoutForm = () => {
   const [expiryMonth, setExpiryMonth] = useState('01');
   const [expiryYear, setExpiryYear] = useState('2024');
   const [cvv, setCvv] = useState('');
+  const [isCancelled, setIsCancelled] = useState(false); // Nouvel état pour suivre si l'action a été annulée
 
   // Fonction pour formater le numéro de carte
   const handleCardNumberChange = (e) => {
@@ -27,7 +28,7 @@ const CheckoutForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+    // Traitement du paiement ici
     console.log({
       cardNumber,
       cardName,
@@ -37,9 +38,20 @@ const CheckoutForm = () => {
     });
   };
 
+  const handleCancel = () => {
+    // Effacer tous les champs
+    setCardNumber('');
+    setCardName('');
+    setExpiryMonth('01');
+    setExpiryYear('2024');
+    setCvv('');
+    // Activer l'état pour afficher "Payer" au lieu de "Ajouter votre carte"
+    setIsCancelled(true);
+  };
+
   return (
     <form onSubmit={handleSubmit} className="checkout-form">
-      <h2>Ajouter une carte </h2>
+      <h2>{isCancelled ? 'Payer' : 'Ajouter une carte'}</h2>
 
       <div className="form-group">
         <label htmlFor="cardNumber">Numéro de carte</label>
@@ -49,7 +61,7 @@ const CheckoutForm = () => {
           value={cardNumber}
           onChange={handleCardNumberChange}
           placeholder="1234 1234 1234 1234"
-          maxLength="19" 
+          maxLength="19" // 16 chiffres + 3 espaces
           required
         />
       </div>
@@ -106,14 +118,14 @@ const CheckoutForm = () => {
           value={cvv}
           onChange={handleCvvChange}
           placeholder="CVV"
-          maxLength="3"
+          maxLength="3" // Limite à 3 chiffres pour le CVV
           required
         />
       </div>
 
       <div className="form-actions">
-        <button type="submit">Ajouter votre carte</button>
-        <button type="button">Annuler</button>
+        <button type="submit">{isCancelled ? 'Payer' : 'Ajouter votre carte'}</button>
+        <button type="button" onClick={handleCancel}>Annuler</button>
       </div>
     </form>
   );
