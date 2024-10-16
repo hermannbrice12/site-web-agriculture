@@ -78,6 +78,7 @@ const CheckoutForm = () => {
           <option value="États-Unis">États-Unis</option>
           <option value="France">France</option>
           <option value="Canada">Canada</option>
+            <option value="Italie">Italie</option>
           <option value="Royaume-Uni">Royaume-Uni</option>
           {/* Ajouter d'autres options si nécessaire */}
         </select>
