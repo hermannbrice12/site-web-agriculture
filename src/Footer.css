@@ -41,7 +41,7 @@
   }
   
   .social-networks ul a:hover {
-    color: #d3d3d3; /* Changement de couleur au survol */
+    color: green; /* Changement de couleur au survol */
     text-decoration: underline;
   }
   
